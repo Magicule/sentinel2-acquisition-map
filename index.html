@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentinel‑2 Acquisition Footprints</title>
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+oIbXoCaFSGKc1I6BxyJsqZj3M6a/jB4Z+DecVFRo="
+    crossorigin=""
+  />
+  <style>
+    /* Simple page styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-oQMOseKjr8sH1PL/Fi6ZTDfdN+yWjv7aM7nxZ1GLqKs="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // Initialize the map centered roughly over Nigeria
+    var map = L.map('map').setView([8.9, 7.4], 6);
+
+    // Add an OpenStreetMap base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Style for each footprint polygon
+    function footprintStyle(feature) {
+      return {
+        color: '#0078A8',
+        weight: 1,
+        fillColor: '#0078A8',
+        fillOpacity: 0.4
+      };
+    }
+
+    // Load the GeoJSON footprints from local file
+    fetch('sentinel2_acquisitions.geojson')
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        L.geoJSON(data, {
+          style: footprintStyle,
+          onEachFeature: function (feature, layer) {
+            var props = feature.properties || {};
+            var popupContent = '<strong>' + (props.name || props.ID || 'Tile') + '</strong>';
+            if (props.ObservationTimeStart && props.ObservationTimeStop) {
+              popupContent += '<br><b>Start:</b> ' + props.ObservationTimeStart;
+              popupContent += '<br><b>Stop:</b> ' + props.ObservationTimeStop;
+            }
+            if (props.Timeliness) {
+              popupContent += '<br><b>Timeliness:</b> ' + props.Timeliness;
+            }
+            layer.bindPopup(popupContent);
+          }
+        }).addTo(map);
+      })
+      .catch(function (err) {
+        console.error('Failed to load GeoJSON:', err);
+      });
+  </script>
+</body>
+</html>
