@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sentinel-2 Acquisition Footprints</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+oIbXoCaFSGKc1I6BxyJsqZj3M6a/jB4Z+DecVFRo=" crossorigin="" />
+  <!-- Load Leaflet CSS without SRI/crossorigin attributes to avoid CSP issues -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     html, body { height: 100%; margin: 0; padding: 0; }
     #map { width: 100%; height: 100%; }
@@ -417,7 +418,8 @@
 {"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-88.92213834100068,77.82616895698101],[-84.21276690175513,78.71722475152276],[-94.38063570302627,80.52809346098657],[-98.97148310934267,79.49041276689168],[-102.72584126517927,78.39900397328006],[-92.97476663976022,76.86658163379572],[-88.92213834100068,77.82616895698101]]]},"properties":{"name":"53339-1","visibility":false,"styleUrl":"#SUN","fill-opacity":0.25098039215686274,"fill":"#FFFFFF","stroke-opacity":1,"stroke":"#FFFFFF","stroke-width":2,"ID":"53339-1","Timeliness":"NOMINAL","Station":"EDRS-A","Mode":"SUN","ObservationTimeStart":"2025-09-08T01:30:06.695","ObservationTimeStop":"2025-09-08T01:30:49.991","ObservationDuration":"43296","OrbitAbsolute":"53339","OrbitRelative":"117","Scenes":"12","timespan":{"begin":"2025-09-08T01:30:06.695","end":"2025-09-08T01:30:49.991"}}}
 ]}
   </script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-oQMOseKjr8sH1PL/Fi6ZTDfdN+yWjv7aM7nxZ1GLqKs=" crossorigin=""></script>
+  <!-- Load Leaflet JS without SRI/crossorigin attributes to avoid CSP issues -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var map = L.map('map').setView([8.9, 7.4], 6);
